@@ -1,0 +1,162 @@
+/* About Page CSS */
+
+.about-page {
+	background-color: var(--bg-main);
+	color: var(--text-main);
+	padding-bottom: 60px;
+}
+
+/* Hero Section */
+.about-hero {
+	background-color: #fcfcfc;
+	padding: 80px 0;
+	border-bottom: 1px solid var(--border-color);
+	text-align: center;
+}
+
+.about-hero-content {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.about-badge {
+	display: inline-block;
+	background-color: var(--primary-color);
+	color: #fff;
+	font-family: var(--font-ui);
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	padding: 4px 10px;
+	margin-bottom: 20px;
+}
+
+.about-title {
+	font-family: var(--font-heading);
+	font-size: 48px;
+	font-weight: 700;
+	line-height: 1.1;
+	margin-bottom: 25px;
+	color: var(--text-dark);
+}
+
+.about-subtitle {
+	font-family: var(--font-ui);
+	font-size: 18px;
+	line-height: 1.6;
+	color: var(--text-muted);
+}
+
+/* Topics Section */
+.about-topics {
+	padding: 80px 0;
+}
+
+.topics-header {
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+.topics-header h2 {
+	font-family: var(--font-heading);
+	font-size: 32px;
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+
+.topics-divider {
+	width: 50px;
+	height: 3px;
+	background-color: var(--primary-color);
+	margin: 0 auto 15px auto;
+}
+
+.topics-header p {
+	font-family: var(--font-ui);
+	color: var(--text-muted);
+	font-size: 16px;
+}
+
+.topics-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 30px;
+}
+
+.topic-card {
+	background: #fff;
+	border: 1px solid var(--border-color);
+	padding: 30px 20px;
+	text-align: center;
+	transition:
+		transform 0.3s ease,
+		box-shadow 0.3s ease;
+}
+
+.topic-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.topic-icon {
+	font-size: 32px;
+	color: var(--primary-color);
+	margin-bottom: 15px;
+}
+
+.topic-card h3 {
+	font-family: var(--font-heading);
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+
+.topic-card p {
+	font-family: var(--font-ui);
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--text-main);
+}
+
+/* Mission Section */
+.about-mission {
+	background-color: #111;
+	color: #fff;
+	padding: 80px 0;
+	text-align: center;
+}
+
+.mission-inner {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.mission-text h2 {
+	font-family: var(--font-heading);
+	font-size: 36px;
+	font-weight: 700;
+	margin-bottom: 30px;
+}
+
+.mission-text p {
+	font-family: var(--font-body);
+	font-size: 18px;
+	line-height: 1.8;
+	margin-bottom: 20px;
+	color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.about-title {
+		font-size: 36px;
+	}
+	.about-subtitle {
+		font-size: 16px;
+	}
+	.about-hero,
+	.about-topics,
+	.about-mission {
+		padding: 50px 0;
+	}
+}

@@ -1,0 +1,218 @@
+import axios from 'axios'
+
+const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL
+const API_TOKEN = process.env.NEXT_PUBLIC_STRAPI_TOKEN
+
+const api = axios.create({
+	baseURL: `${API_URL}/api`,
+	headers: {
+		Authorization: `Bearer ${API_TOKEN}`,
+	},
+})
+
+const extractTextFromRichText = blocks => {
+	if (!blocks) return ''
+	if (typeof blocks === 'string') return blocks
+	if (!Array.isArray(blocks)) return ''
+	return blocks
+		.map(block => {
+			if (block.children) {
+				return block.children.map(child => child.text || '').join('')
+			}
+			return ''
+		})
+		.join('\n')
+}
+
+// Helper function to format the article data exactly like mock data
+const formatArticle = item => {
+	// Format the date
+	const dateObj = new Date(item.publishedAt || item.createdAt)
+	const options = { year: 'numeric', month: 'long', day: 'numeric' }
+	const formattedDate = dateObj.toLocaleDateString('en-US', options)
+
+	// Get image URL
+	let imageUrl =
+		'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80' // default
+	if (item.featuredImage && item.featuredImage.url) {
+		imageUrl = item.featuredImage.url
+	}
+
+	// Calculate reading time or provide default excerpt if none
+	const excerpt =
+		item.description ||
+		'An exclusive look into the most pressing trends of the year. Essential reading for anyone looking to stay ahead of the curve.'
+
+	return {
+		id: item.id.toString(),
+		documentId: item.documentId,
+		slug: item.slug,
+		title: item.title,
+		category: item.category?.name || 'Tech', // Fallback to Tech
+		author: item.author?.name || 'Alex Carter', // Fallback to Alex Carter
+		authorSlug: item.author?.slug || 'alex-carter',
+		authorBio:
+			extractTextFromRichText(item.author?.bio) ||
+			'Newspaper is your news, entertainment, music fashion website. We provide you with the latest breaking news and videos straight from the entertainment industry.',
+		authorAvatar:
+			item.author?.avatar?.url ||
+			`https://ui-avatars.com/api/?name=${encodeURIComponent(item.author?.name || 'Alex Carter')}&background=random&color=fff&size=52`,
+		date: formattedDate,
+		image: imageUrl,
+		featuredImage: imageUrl,
+		contentImage1: item.contentImage1?.url || null,
+		contentImage2: item.contentImage2?.url || null,
+		content: item.content, // Raw content blocks from Strapi
+		excerpt: excerpt,
+		views: parseInt(item.views) || Math.floor(Math.random() * 10000), // Fallback to random if not available
+		commentsCount: parseInt(item.commentsCount) || 0,
+		isFeatured: item.isExclusive || false,
+		isExclusive: item.isExclusive || false,
+		tags: item.tags || [],
+	}
+}
+
+const POPULATE_QUERY =
+	'populate[0]=category&populate[1]=author.avatar&populate[2]=featuredImage&populate[3]=contentImage1&populate[4]=contentImage2'
+
+export const fetchArticles = async () => {
+	try {
+		const response = await api.get(
+			`/articles?${POPULATE_QUERY}&pagination[limit]=100`,
+		)
+		const data = response.data.data
+		if (!data) return []
+
+		return data.map(formatArticle)
+	} catch (error) {
+		console.error('Error fetching articles:', error)
+		return [] // Return empty array on error to prevent breaking the UI
+	}
+}
+
+export const fetchArticleBySlug = async slug => {
+	try {
+		// Strapi uses filters for searching
+		const response = await api.get(
+			`/articles?filters[slug][$eq]=${slug}&${POPULATE_QUERY}`,
+		)
+		const data = response.data.data
+
+		if (!data || data.length === 0) return null
+
+		return formatArticle(data[0])
+	} catch (error) {
+		console.error(`Error fetching article with slug ${slug}:`, error)
+		return null
+	}
+}
+
+export const fetchArticlesByCategory = async (categorySlug, page = 1) => {
+	try {
+		// Category page layout expects 4 featured + 5 feed on page 1, and 5 feed on page 2+
+		const start = page === 1 ? 0 : 4 + (page - 1) * 5
+		const limit = page === 1 ? 9 : 5
+
+		const response = await api.get(
+			`/articles?filters[category][slug][$eq]=${categorySlug}&${POPULATE_QUERY}&pagination[start]=${start}&pagination[limit]=${limit}`,
+		)
+		const data = response.data.data
+		const meta = response.data.meta
+
+		if (!data) return { articles: [], meta: null }
+
+		const total = meta?.pagination?.total || 0
+		let pageCount = 1
+		if (total > 9) {
+			pageCount = 1 + Math.ceil((total - 9) / 5)
+		}
+
+		return {
+			articles: data.map(formatArticle),
+			meta: { pageCount },
+		}
+	} catch (error) {
+		console.error(
+			`Error fetching articles for category ${categorySlug}:`,
+			error,
+		)
+		return { articles: [], meta: null }
+	}
+}
+
+export const fetchArticlesByAuthor = async (authorSlug, page = 1) => {
+	try {
+		const response = await api.get(
+			`/articles?filters[author][slug][$eq]=${authorSlug}&${POPULATE_QUERY}&pagination[page]=${page}&pagination[pageSize]=5`,
+		)
+		const data = response.data.data
+		const meta = response.data.meta
+
+		if (!data) return { articles: [], meta: null }
+
+		return {
+			articles: data.map(formatArticle),
+			meta: meta.pagination,
+		}
+	} catch (error) {
+		console.error(`Error fetching articles for author ${authorSlug}:`, error)
+		return { articles: [], meta: null }
+	}
+}
+
+export const fetchAuthorDetailsBySlug = async authorSlug => {
+	try {
+		const response = await api.get(
+			`/authors?filters[slug][$eq]=${authorSlug}&populate=avatar`,
+		)
+		const data = response.data.data
+
+		if (!data || data.length === 0) return null
+
+		const authorObj = data[0]
+		return {
+			name: authorObj.name,
+			slug: authorObj.slug,
+			bio: extractTextFromRichText(authorObj.bio) || '',
+			avatar:
+				authorObj.avatar?.url ||
+				`https://ui-avatars.com/api/?name=${encodeURIComponent(authorObj.name)}&background=random&color=fff&size=500`,
+		}
+	} catch (error) {
+		console.error(`Error fetching author details for ${authorSlug}:`, error)
+		return null
+	}
+}
+
+export const submitContactMessage = async data => {
+	try {
+		const response = await api.post('/contacts', {
+			data: {
+				name: data.name,
+				email: data.email,
+				request: data.request,
+			},
+		})
+		return { success: true, data: response.data }
+	} catch (error) {
+		console.error('Error submitting contact message:', error)
+		return { success: false, error: error.message }
+	}
+}
+
+export const submitSubscription = async email => {
+	try {
+		const response = await api.post('/subscribers', {
+			data: { email },
+		})
+		return { success: true, data: response.data }
+	} catch (error) {
+		console.error('Error submitting subscription:', error)
+		// Try to extract Strapi's error message (e.g. for unique constraints)
+		let errorMessage = 'Failed to subscribe. Please try again.'
+		if (error.response?.data?.error?.message) {
+			errorMessage = error.response.data.error.message
+		}
+		return { success: false, error: errorMessage }
+	}
+}

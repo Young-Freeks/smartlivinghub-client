@@ -1,0 +1,131 @@
+.cat-section-wrapper {
+	position: relative;
+	margin-bottom: 20px;
+	padding-top: 20px;
+	padding-bottom: 30px;
+}
+
+.cat-split-bg {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 50%; /* Only colors the bottom half of the section */
+	background: var(--bg-secondary);
+	z-index: 0;
+}
+
+.cat-section-4col {
+	position: relative;
+	z-index: 1; /* Content sits cleanly above the split bg */
+}
+
+.cat-header-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 2px solid var(--text-main);
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+}
+
+.cat-header-title {
+	font-family: var(--font-heading);
+	font-size: 28px;
+	font-weight: 600; /* Decreased from 800 */
+	color: var(--text-main);
+	text-transform: capitalize;
+	letter-spacing: -0.5px;
+}
+
+.cat-header-view-all {
+	font-family: var(--font-ui);
+	font-size: 11px;
+	color: var(--primary-color);
+	font-weight: 600; /* Decreased from 700 */
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.cat-grid-4col {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: var(--gap-grid);
+}
+
+.cat-grid-card {
+	display: flex;
+	flex-direction: column;
+}
+
+.cat-grid-card .image-wrapper {
+	aspect-ratio: 4/3;
+	margin-bottom: 15px;
+}
+
+.cat-grid-card h3 {
+	font-size: 20px;
+	line-height: 1.3;
+	margin-bottom: 10px;
+}
+
+.cat-list-small {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.cat-list-item {
+	align-items: start;
+	gap: 15px;
+}
+
+.cat-list-item .image-wrapper {
+	width: 80px;
+	height: 60px;
+	flex-shrink: 0;
+}
+
+.cat-list-item h4 {
+	font-size: 15px;
+	line-height: 1.4;
+	margin-bottom: 4px;
+}
+
+@media (max-width: 1024px) {
+	.cat-grid-4col {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.cat-grid-4col {
+		grid-template-columns: 1fr;
+	}
+	.cat-split-bg {
+		height: 30%; /* Less height consumed on mobile */
+	}
+}
+
+@media (max-width: 360px) {
+	.cat-header-title {
+		font-size: 22px;
+	}
+	.cat-header-row {
+		margin-bottom: 20px;
+	}
+	.cat-grid-card h3 {
+		font-size: 18px;
+	}
+	.cat-list-item {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 5px;
+	}
+	.cat-list-item .image-wrapper {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16/9;
+	}
+}

@@ -1,0 +1,158 @@
+.recent-posts-section {
+	padding-bottom: 30px; /* Reduced from 60px */
+}
+
+.recent-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: var(--gap-grid);
+}
+
+.mixed-article-card {
+	display: flex;
+	flex-direction: column;
+}
+
+/* For main tall image cards */
+.mixed-tall .image-wrapper {
+	aspect-ratio: 4/3;
+	margin-bottom: 15px;
+}
+
+/* For small square cards in rows */
+.mixed-small {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.mixed-small .image-wrapper {
+	flex: 0 0 100px;
+	width: 100px;
+	height: 75px;
+}
+
+.mixed-small h4 {
+	font-size: 16px;
+	line-height: 1.3;
+}
+
+.mixed-meta {
+	font-family: var(--font-ui);
+	font-size: 10px;
+	color: var(--text-muted);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 5px;
+}
+
+.mixed-meta .author {
+	color: var(--text-main);
+	font-weight: 500; /* Decreased from 600 */
+}
+
+/* Card with overlay and custom red background class (e.g. Marketing dark card) */
+.dark-overlay-card {
+	position: relative;
+	height: 400px;
+	color: #fff;
+}
+
+.dark-overlay-card .image-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.dark-overlay-card .image-wrapper::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5); /* Dimming the image */
+}
+
+/* Dark card category label */
+.dark-overlay-card .cat-label-top {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	background: var(
+		--primary-color
+	); /* Red background for cat label as requested */
+	color: #fff;
+	padding: 4px 10px;
+	font-family: var(--font-heading);
+	font-size: 14px;
+	font-weight: 600; /* Decreased from 700 */
+	z-index: 2;
+}
+
+.dark-overlay-card .doc-content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 25px;
+	z-index: 2;
+}
+
+.dark-overlay-card h3 {
+	font-size: 26px;
+	line-height: 1.2;
+	margin-bottom: 10px;
+}
+
+.dark-overlay-card .mixed-meta .author {
+	color: #ddd;
+}
+.dark-overlay-card .mixed-meta {
+	color: #ddd;
+}
+
+@media (max-width: 768px) {
+	.recent-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.rpg-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.rpg-card {
+		height: 350px;
+	}
+
+	.rpg-title {
+		font-size: 20px;
+	}
+
+	.rpg-excerpt {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 400px) {
+	.mixed-small {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+
+	.mixed-small .image-wrapper {
+		flex: 0 0 auto;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16/9;
+	}
+}

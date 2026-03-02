@@ -1,0 +1,205 @@
+/* Category Page Layout */
+.category-page {
+	padding-bottom: 60px;
+}
+
+/* 1. Header Banner */
+.category-header-banner {
+	padding: 40px 0; /* Matching Author Page padding vibe */
+	background-color: var(--bg-secondary);
+	text-align: center;
+	border-bottom: 1px solid var(--border-color);
+	margin-bottom: 40px;
+}
+
+.category-title-main {
+	font-family: var(--font-heading);
+	font-size: 52px; /* Restored font size */
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 15px; /* Restored margin */
+	text-transform: capitalize;
+}
+
+.category-sub-nav {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+.category-sub-nav a {
+	font-family: var(--font-ui);
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--text-dark);
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.category-sub-nav a:hover {
+	color: var(--primary-color);
+}
+
+/* 2. Top Featured Grid (4 Columns) */
+.category-featured-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+	margin-top: 40px;
+	margin-bottom: 60px;
+}
+
+.cat-featured-card {
+	position: relative;
+	height: 380px; /* Taller height as per demo */
+	overflow: hidden;
+}
+
+.cat-featured-card .image-wrapper {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.cat-featured-card img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s ease;
+}
+
+.cat-featured-card:hover img {
+	transform: scale(1.05); /* Reuse the nice hover zoom */
+}
+
+.cat-featured-overlay {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 30px 20px 20px; /* Gradient needs to start higher */
+	background: linear-gradient(
+		to top,
+		rgba(0, 0, 0, 0.8) 0%,
+		rgba(0, 0, 0, 0.5) 40%,
+		transparent 100%
+	);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 12px;
+}
+
+.category-label {
+	font-family: var(--font-ui);
+	font-size: 10px;
+	font-weight: 700;
+	color: #fff;
+	padding: 3px 6px;
+	text-transform: uppercase;
+	display: inline-block;
+}
+
+.cat-featured-title {
+	color: #fff;
+	font-family: var(--font-heading);
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1.3;
+	margin: 0;
+}
+
+/* 3. Main Feed + Sidebar */
+.category-main-content {
+	display: grid;
+	grid-template-columns: 2.2fr 1fr; /* Approximately 69% / 31% split, like Home page */
+	gap: 40px;
+}
+
+/* Pagination */
+.category-pagination {
+	margin-top: 50px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.page-numbers {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 40px;
+	height: 40px;
+	padding: 0 15px;
+	background-color: var(--bg-light);
+	color: var(--text-dark);
+	font-family: var(--font-ui);
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	border: 1px solid transparent;
+}
+
+.page-numbers:hover {
+	background-color: #ededed;
+}
+
+.page-numbers.current {
+	background-color: var(--primary-color);
+	color: #fff;
+	cursor: default;
+}
+
+.page-numbers.next {
+	font-size: 18px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+	.category-featured-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.category-main-content {
+		grid-template-columns: 1fr; /* Stack feed and sidebar */
+	}
+
+	.sidebar-column {
+		margin-top: 40px;
+	}
+}
+
+@media (max-width: 576px) {
+	.category-header-banner {
+		padding: 25px 0; /* Significantly reduced mobile padding */
+		margin-bottom: 25px;
+	}
+
+	.category-title-main {
+		font-size: 32px; /* Slightly smaller for mobile */
+		margin-bottom: 5px; /* Less margin */
+	}
+
+	.category-featured-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.cat-featured-title {
+		font-size: 18px;
+	}
+}
+
+@media (max-width: 400px) {
+	.category-title-main {
+		font-size: 28px;
+	}
+	.page-numbers {
+		min-width: 30px;
+		height: 30px;
+		padding: 0 8px;
+		font-size: 12px;
+	}
+}

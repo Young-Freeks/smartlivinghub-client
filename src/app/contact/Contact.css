@@ -1,0 +1,144 @@
+/* Contact Page CSS */
+
+.contact-page {
+	padding: 60px 0 100px;
+	color: var(--text-main);
+}
+
+.contact-content {
+	max-width: 600px;
+	margin: 0 auto;
+	background: #fff;
+	padding: 50px 60px;
+	border: 1px solid var(--border-color);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.contact-title {
+	font-family: var(--font-heading);
+	font-size: 40px;
+	font-weight: 700;
+	margin-bottom: 20px;
+	color: var(--text-dark);
+	border-bottom: 2px solid var(--primary-color);
+	padding-bottom: 15px;
+}
+
+.contact-intro {
+	font-family: var(--font-ui);
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--text-muted);
+	margin-bottom: 40px;
+}
+
+.contact-form {
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.form-group label {
+	font-family: var(--font-heading);
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--text-dark);
+	text-transform: uppercase;
+}
+
+.form-group input,
+.form-group textarea {
+	width: 100%;
+	padding: 15px;
+	font-family: var(--font-body);
+	font-size: 16px;
+	border: 1px solid #ddd;
+	background-color: #fcfcfc;
+	transition:
+		border-color 0.2s,
+		background-color 0.2s;
+	outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+	border-color: var(--primary-color);
+	background-color: #fff;
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+	background-color: #eee;
+}
+
+.contact-submit-btn {
+	background-color: var(--primary-color);
+	color: #fff;
+	border: none;
+	padding: 18px 30px;
+	font-family: var(--font-heading);
+	font-size: 15px;
+	font-weight: 700;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	margin-top: 10px;
+}
+
+.contact-submit-btn:hover:not(:disabled) {
+	background-color: #d12a2a;
+}
+
+.contact-submit-btn:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+/* Success and Error States */
+.contact-success {
+	text-align: center;
+	padding: 40px 20px;
+	background-color: #fdfaf5;
+	border: 1px solid #e8e0c8;
+}
+
+.contact-success h3 {
+	font-family: var(--font-heading);
+	font-size: 24px;
+	color: #27ae60;
+	margin-bottom: 15px;
+}
+
+.contact-success p {
+	font-family: var(--font-ui);
+	font-size: 16px;
+	margin-bottom: 30px;
+	color: var(--text-main);
+}
+
+.contact-error {
+	padding: 15px;
+	background-color: #fee;
+	color: #c0392b;
+	border: 1px solid #fcc;
+	font-family: var(--font-ui);
+	font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.contact-content {
+		padding: 30px 20px;
+	}
+	.contact-title {
+		font-size: 32px;
+	}
+}

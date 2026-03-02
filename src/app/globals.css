@@ -1,0 +1,397 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Work+Sans:wght@400;500;600;700;800&family=Verdana&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:wght@400;600;700&display=swap');
+
+:root {
+	/* Colors - Newspaper Week Pro Clone */
+	--primary-color: #ec3535; /* Signature Red */
+	--text-main: #000000;
+	--text-muted: #999999;
+	--bg-main: #ffffff;
+	--bg-secondary: #f9f9f9;
+	--border-color: #eaeaea;
+
+	/* Category Specific Colors */
+	--cat-health: #0088cc;
+	--cat-money: #81d742;
+	--cat-tech: #000000;
+	--cat-home: #f7a000;
+	--cat-travel: #ec3535;
+
+	/* Typography */
+	--font-heading: 'Work Sans', sans-serif;
+	--font-body:
+		'Work Sans', sans-serif; /* Article lists and body use sans-serif */
+	--font-ui: 'Work Sans', sans-serif;
+	--font-logo: 'PT Serif', serif;
+
+	/* Spacing */
+	--container-width: 1440px;
+	--sidebar-width: 320px;
+	--gap-main: 30px; /* Reduced from 48px */
+	--gap-grid: 20px; /* Reduced from 48px */
+}
+
+[data-theme='dark'] {
+	--primary-color: #ec3535;
+	--text-main: #f0f0f0;
+	--text-muted: #a0a0a0;
+	--bg-main: #111111;
+	--bg-secondary: #1a1a1a;
+	--border-color: #2a2a2a;
+}
+
+/* Reset & Global */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: var(--font-body);
+	background-color: var(--bg-main);
+	color: var(--text-main);
+	line-height: 1.6;
+	font-size: 16px; /* Reset to 16px */
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+a:hover {
+	color: var(--primary-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-heading);
+	font-weight: 700; /* Revert back to bolder */
+	line-height: 1.2;
+}
+
+.container {
+	max-width: var(--container-width);
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.main-layout {
+	display: flex;
+	gap: var(--gap-main);
+	margin-top: 30px; /* Reduced */
+	margin-bottom: 40px; /* Reduced */
+}
+
+.main-content {
+	flex: 1;
+	min-width: 0;
+}
+
+.sidebar,
+.sidebar-column,
+.article-sidebar {
+	width: var(--sidebar-width);
+	flex-shrink: 0;
+	position: sticky;
+	top: 100px;
+	height: max-content;
+}
+
+/* Block Headers (e.g. "DON'T MISS", "LIFESTYLE") */
+.block-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	text-transform: uppercase;
+	font-family: var(--font-ui);
+	margin-bottom: 15px; /* Reduced from 24px */
+	border-bottom: 2px solid var(--text-main);
+	padding-bottom: 8px;
+}
+
+.block-title {
+	font-family: var(--font-heading); /* Work Sans */
+	font-size: 26px; /* Updated from 18px to match screenshot */
+	font-weight: 700; /* Max weight 700 */
+	letter-spacing: 0.5px;
+	background-color: var(--text-main);
+	color: var(--bg-main);
+	padding: 4px 12px;
+	display: inline-block;
+	margin-bottom: -10px; /* Overlap border */
+}
+
+/* Base Article Card Styles */
+.article-meta {
+	font-family: var(--font-ui); /* Work Sans */
+	font-size: 11px; /* Matches screenshot */
+	color: var(--text-muted);
+	text-transform: uppercase;
+	margin-top: 8px;
+	display: flex;
+	flex-wrap: wrap; /* Support wrapping on small screens */
+	gap: 6px; /* Tighter gap, use separator for visual spacing */
+	align-items: center;
+}
+
+.article-meta .meta-item {
+	display: flex;
+	align-items: center;
+	white-space: nowrap;
+}
+
+.article-meta .meta-separator {
+	color: #ccc;
+	margin: 0 4px;
+	font-size: 10px;
+}
+
+.article-meta .author-info {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--text-main);
+	font-weight: 600; /* Standardized author weight */
+	font-size: 11px; /* Standardized size */
+	text-transform: uppercase;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: color 0.3s ease;
+}
+
+.article-meta .author-info:hover {
+	color: var(--primary-color);
+}
+
+.article-meta .meta-date,
+.article-meta .meta-views {
+	font-weight: 400;
+	color: var(--text-muted);
+	text-transform: none; /* User prefers lowercase "views" and mixed case dates */
+}
+
+.author-avatar {
+	width: 26px; /* Increased size */
+	height: 26px; /* Increased size */
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+/* Feed List Styles (Moved from CategoryPage for Global Availability and Hydration FOUC Fix) */
+.category-feed-list {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.cat-list-item {
+	display: grid;
+	grid-template-columns: 350px 1fr; /* Image width fixed, content takes rest */
+	gap: 30px;
+}
+
+.cat-list-image-wrap {
+	height: 230px; /* Fixed height for consistent listing */
+	overflow: hidden; /* Necessary for zoom effect */
+}
+
+.cat-list-image-wrap img {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	transition: transform 0.5s ease;
+	display: block !important;
+}
+
+.cat-list-image-wrap:hover img {
+	transform: scale(1.05);
+}
+
+.cat-list-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center; /* Center content vertically relative to image */
+}
+
+.cat-list-title {
+	font-family: var(--font-heading);
+	font-size: 30px; /* Larger title like in demo */
+	font-weight: 700;
+	line-height: 1.25;
+	margin: 0 0 15px 0;
+}
+
+.cat-list-title a {
+	color: var(--text-main);
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.cat-list-title a:hover {
+	color: var(--primary-color);
+}
+
+.cat-list-meta {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	font-family: var(--font-ui);
+	font-size: 13px;
+	color: var(--text-muted);
+	margin-bottom: 15px;
+}
+
+.cat-list-excerpt {
+	font-family: var(--font-body);
+	font-size: 16px; /* Slightly larger for readability */
+	color: #666;
+	line-height: 1.7;
+	margin: 0;
+}
+
+.no-articles-msg {
+	font-family: var(--font-body);
+	font-size: 18px;
+	color: var(--text-muted);
+	padding: 40px 0;
+}
+
+.cat-list-author {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: var(--text-main);
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 11px;
+	transition: color 0.3s ease;
+}
+
+.cat-list-author:hover {
+	color: var(--primary-color);
+}
+
+.author-avatar-small {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.cat-label {
+	font-family: var(--font-ui); /* Work Sans */
+	font-size: 11px; /* Updated from 10px to match screenshot */
+	font-weight: 700; /* Max weight 700 */
+	text-transform: uppercase;
+	color: #fff !important;
+	background-color: var(--primary-color) !important;
+	padding: 2px 6px;
+	display: inline-block;
+	margin-bottom: 8px;
+}
+
+.cat-text {
+	font-family: var(--font-ui);
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--primary-color) !important;
+	text-decoration: none;
+	display: inline-block;
+}
+
+/* Specific Category Label Colors */
+.cat-health {
+	background-color: var(--cat-health);
+}
+.cat-money {
+	background-color: var(--cat-money);
+}
+.cat-tech {
+	background-color: var(--cat-tech);
+}
+.cat-home {
+	background-color: var(--cat-home);
+}
+.cat-travel {
+	background-color: var(--cat-travel);
+}
+
+.image-wrapper {
+	overflow: hidden;
+	position: relative;
+	background: var(--bg-secondary);
+	display: block; /* CRITICAL FIX: prevents collapsing when used on <a> tags */
+}
+
+.image-wrapper img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+	display: block;
+}
+
+.article-card:hover .image-wrapper img {
+	transform: scale(1.05); /* Newspaper Week Pro iconic zoom effect */
+}
+
+@media (max-width: 1024px) {
+	.main-layout {
+		flex-direction: column;
+	}
+	.sidebar {
+		width: 100%;
+	}
+}
+
+@media (max-width: 768px) {
+	.cat-list-item {
+		grid-template-columns: 1fr; /* Stack image and text in feed */
+		gap: 20px;
+	}
+
+	.cat-list-image-wrap {
+		height: 200px; /* Shorter image for mobile feed */
+	}
+}
+
+@media (max-width: 576px) {
+	.cat-list-title {
+		font-size: 22px;
+	}
+}
+
+@media (max-width: 480px) {
+	.container {
+		padding: 0 15px; /* Recover horizontal space on mobile but maintain breathing room */
+	}
+	.block-title {
+		font-size: 20px;
+		padding: 4px 10px;
+	}
+	/* Ensure sidebars don't break flex/grid layouts on small screens */
+	.sidebar-column {
+		width: 100% !important;
+		min-width: 0;
+		padding-left: 0;
+		padding-right: 0;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
+@media (max-width: 400px) {
+	.cat-list-item {
+		grid-template-columns: 1fr;
+	}
+}

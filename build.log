@@ -1,0 +1,38 @@
+
+> smartlivinghub-client@0.1.0 build
+> next build
+
+⚠ `eslint` configuration in next.config.mjs is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ Invalid next.config.mjs options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Turbopack build encountered 1 warnings:
+./src/assets/menu-image.jpg
+AVIF image not supported
+This version of Turbopack does not support AVIF images, will emit without optimization or encoding
+
+Import trace:
+  Client Component SSR:
+    ./src/assets/menu-image.jpg
+    ./src/components/MenuModal/MenuModal.jsx [Client Component SSR]
+    ./src/layout/Header/Header.jsx [Client Component SSR]
+    ./src/layout/Header/Header.jsx [Server Component]
+    ./src/layout/Layout/Layout.jsx [Server Component]
+    ./src/app/layout.js [Server Component]
+
+
+✓ Compiled successfully in 1188.1ms
+  Running TypeScript ...
+  Collecting page data using 27 workers ...
+  Generating static pages using 27 workers (0/13) ...
+TypeError: Cannot read properties of undefined (reading 'charAt')
+    at <unknown> (D:\smartlivinghub-client\.next\server\chunks\ssr\[root-of-the-server]__d6c3ce4d._.js:1:5100)
+Error occurred prerendering page "/Category/CategoryPage". Read more: https://nextjs.org/docs/messages/prerender-error
+TypeError: Cannot read properties of undefined (reading 'charAt')
+    at <unknown> (D:\smartlivinghub-client\.next\server\chunks\ssr\[root-of-the-server]__d6c3ce4d._.js:1:5100)
+Export encountered an error on /Category/CategoryPage, exiting the build.
+⨯ Next.js build worker exited with code: 1 and signal: null
