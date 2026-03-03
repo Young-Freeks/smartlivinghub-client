@@ -88,7 +88,6 @@ const Header = () => {
 							style={{
 								display: 'flex',
 								alignItems: 'center',
-								lineHeight: 0,
 								marginTop: '-2px',
 							}}
 						>
