@@ -184,6 +184,53 @@ export const fetchAuthorDetailsBySlug = async authorSlug => {
 	}
 }
 
+// Helper function to format the product data exactly like mock data
+const formatProduct = item => {
+	// Get image URL
+	let imageUrl =
+		'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&q=80&w=1000' // default
+	if (item.image && item.image.url) {
+		imageUrl = item.image.url
+	}
+
+	return {
+		id: item.id.toString(),
+		documentId: item.documentId,
+		name: item.title,
+		originalPrice: `$${item.oldPrice}`,
+		discountPrice: `$${item.price}`,
+		rawOriginalPrice: item.oldPrice,
+		rawDiscountPrice: item.price,
+		rating: item.rating,
+		reviews: item.reviews,
+		image: imageUrl,
+		timer: item.timer !== undefined ? item.timer : true,
+		discount: item.discount, // e.g., 40
+		link: item.link,
+		benefitsTitle: item.benefitsTitle,
+		benefits: [
+			item.benefit1,
+			item.benefit2,
+			item.benefit3,
+			item.benefit4,
+		].filter(Boolean), // Remove empty benefits
+	}
+}
+
+export const fetchProductById = async id => {
+	try {
+		const response = await api.get(`/products/${id}?populate=image`)
+		const data = response.data.data
+
+		if (!data) return null
+
+		return formatProduct(data)
+	} catch (error) {
+		console.error(`Error fetching product with id ${id}:`, error)
+		return null
+	}
+}
+
 export const submitContactMessage = async data => {
 	try {
 		const response = await api.post('/contacts', {

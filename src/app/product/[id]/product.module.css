@@ -132,17 +132,22 @@
 }
 
 .mainTitle {
-	font-size: 48px;
+	font-size: 36px;
 	font-weight: 900;
 	color: #0f172a;
 	margin-bottom: 24px;
 	line-height: 1.1;
 	letter-spacing: -1px;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 @media (min-width: 768px) {
 	.mainTitle {
-		font-size: 64px;
+		font-size: 56px;
 	}
 }
 
@@ -448,112 +453,71 @@
 }
 
 /* Amazon Button */
+/* Amazon Authentic Button Style (Main) */
 .amazonBtnWrap {
 	position: relative;
 	width: 100%;
 	display: block;
-	overflow: hidden;
-	border-radius: 24px;
-	padding: 4px;
+	text-decoration: none;
+	border-radius: 100px;
+	box-shadow: 0 2px 5px 0 rgba(213, 217, 217, 0.5);
+	transition: all 0.1s;
+	background: #ffd814;
+	border: 1px solid #fcd200;
+	padding: 2px;
 	margin-bottom: 24px;
-	box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-	transition: transform 0.3s;
 }
 
 .amazonBtnWrap:hover {
-	transform: translateY(-8px);
+	background: #f7ca00;
+	border-color: #f2c200;
 }
 
-.amazonBtnBorder {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: linear-gradient(to right, #ff9900, #ffd814, #ff9900);
-	background-size: 200% auto;
-	animation: shimmerGradient 3s ease infinite;
-}
-
-.amazonBtnShimmerContainer {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 20;
-	display: flex;
-	justify-content: center;
-	overflow: hidden;
-	border-radius: 24px;
-	pointer-events: none;
-}
-
-.amazonBtnShimmer {
-	width: 150%;
-	height: 100%;
-	background: linear-gradient(
-		to right,
-		transparent,
-		rgba(255, 255, 255, 0.4),
-		transparent
-	);
-	transform: translateX(-150%) skewX(-20deg);
-	animation: shimmerEffect 2.5s infinite ease-in-out;
+.amazonBtnWrap:active {
+	background: #f0b800;
+	border-color: #008296;
+	box-shadow: 0 0 3px rgba(0, 130, 150, 0.4) inset;
 }
 
 .amazonBtnInner {
-	position: relative;
-	width: 100%;
-	background: linear-gradient(to bottom, #ffd814, #f7ca00);
-	border-radius: 20px;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 24px 32px;
-	gap: 4px;
-	border-bottom: 4px solid #f59e0b;
-	z-index: 10;
-	transition: background 0.3s;
-}
-
-.amazonBtnWrap:hover .amazonBtnInner {
-	background: linear-gradient(to bottom, #f7ca00, #e3b000);
+	gap: 8px;
+	padding: 12px 24px;
+	border-radius: 100px;
+	position: relative;
+	z-index: 2;
 }
 
 .amazonBtnMainText {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 12px;
-	color: black;
-	font-weight: 900;
-	font-size: 30px;
-	letter-spacing: -1px;
-	width: 100%;
+	font-family: inherit;
+	font-weight: 600;
+	font-size: 16px;
+	color: #0f1111;
+	letter-spacing: normal;
 }
 
 @media (min-width: 768px) {
 	.amazonBtnMainText {
-		font-size: 36px;
+		font-size: 18px;
 	}
 }
 
 .amazonIcon {
-	font-size: 36px;
-	filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07));
+	font-size: 20px;
+	color: #0f1111;
 }
 
 @media (min-width: 768px) {
 	.amazonIcon {
-		font-size: 48px;
+		font-size: 22px;
 	}
 }
 
 .arrowRight {
 	margin-left: 4px;
-	animation: pulseBg 2s infinite;
+	color: #0f1111; /* Match text color */
 }
 
 .amazonSubText {
@@ -699,6 +663,11 @@
 	font-size: 18px;
 	line-height: 1.4;
 	padding-top: 0; /* Remove uneven top padding since we are centering */
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* Animations */
@@ -845,48 +814,53 @@
 	text-decoration-thickness: 2px;
 }
 
+/* Amazon Authentic Button Style (Sticky) */
 .stickyBtnWrap {
 	flex-grow: 1;
 	position: relative;
-	overflow: hidden;
-	border-radius: 20px;
-	padding: 4px;
-	box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.5);
-	transition: transform 0.3s;
 	display: block;
+	text-decoration: none;
+	border-radius: 100px;
+	box-shadow: 0 2px 5px 0 rgba(213, 217, 217, 0.5);
+	transition: all 0.1s;
+	background: #ffd814;
+	border: 1px solid #fcd200;
+	padding: 2px;
+	max-width: 300px;
 }
 
 .stickyBtnWrap:hover {
-	transform: translateY(-4px);
+	background: #f7ca00;
+	border-color: #f2c200;
+}
+
+.stickyBtnWrap:active {
+	background: #f0b800;
+	border-color: #008296;
+	box-shadow: 0 0 3px rgba(0, 130, 150, 0.4) inset;
 }
 
 .stickyBtnInner {
-	position: relative;
-	width: 100%;
-	background: linear-gradient(to bottom, #ffd814, #f7ca00);
-	border-radius: 16px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 12px;
-	gap: 8px;
-	border-bottom: 4px solid #f59e0b;
-	z-index: 10;
-	transition: background 0.3s;
-}
-
-.stickyBtnWrap:hover .stickyBtnInner {
-	background: linear-gradient(to bottom, #f7ca00, #e3b000);
+	gap: 6px;
+	padding: 10px 16px;
+	border-radius: 100px;
+	position: relative;
+	z-index: 2;
 }
 
 .stickyBtnText {
-	color: black;
-	font-weight: 900;
-	font-size: 20px;
-	letter-spacing: -0.5px;
+	font-family: inherit;
+	font-weight: 600;
+	font-size: 15px;
+	color: #0f1111;
+	letter-spacing: normal;
 }
+
 @media (min-width: 768px) {
 	.stickyBtnText {
-		font-size: 26px;
+		font-size: 16px;
 	}
 }
