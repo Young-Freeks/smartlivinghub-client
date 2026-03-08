@@ -219,7 +219,8 @@ const formatProduct = item => {
 
 export const fetchProductById = async id => {
 	try {
-		const response = await api.get(`/products/${id}?populate=image`)
+		const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
+		const response = await axios.get(`${backendUrl}/api/products/${id}`)
 		const data = response.data.data
 
 		if (!data) return null
