@@ -18,6 +18,9 @@ export async function generateMetadata({ params }) {
 	return {
 		title: article.title,
 		description: article.excerpt,
+		alternates: {
+			canonical: `/article/${slug}`,
+		},
 		openGraph: {
 			title: article.title,
 			description: article.excerpt,
@@ -71,13 +74,36 @@ export default async function Page({ params }) {
 				: allArticles.filter(a => a.id !== fetchedArticle.id).slice(0, 3)
 	}
 
+	// Prepare JSON-LD schema
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'NewsArticle',
+		headline: article?.title,
+		image: [article?.featuredImage || article?.image],
+		datePublished: article?.date ? new Date(article.date).toISOString() : new Date().toISOString(),
+		dateModified: article?.date ? new Date(article.date).toISOString() : new Date().toISOString(),
+		author: [
+			{
+				'@type': 'Person',
+				name: article?.author || 'Smart Living Hub Team',
+				url: `https://smartlivinghub.info/author/${article?.authorSlug || ''}`,
+			},
+		],
+	}
+
 	// Pass pre-fetched server data down to the Client View Component
 	return (
-		<ArticlePage
-			article={article}
-			relatedArticles={relatedArticles}
-			allArticles={allArticles}
-			slug={slug}
-		/>
+		<>
+			<script
+				type='application/ld+json'
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<ArticlePage
+				article={article}
+				relatedArticles={relatedArticles}
+				allArticles={allArticles}
+				slug={slug}
+			/>
+		</>
 	)
 }

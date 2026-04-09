@@ -90,6 +90,49 @@ export const fetchArticles = async () => {
 	}
 }
 
+export const fetchAllArticlesForSitemap = async () => {
+	let allArticles = []
+	let page = 1
+	let hasMore = true
+
+	while (hasMore) {
+		try {
+			// Minimal query to fetch just what sitemap needs
+			const response = await api.get(
+				`/articles?populate[0]=category&populate[1]=author&fields[0]=slug&fields[1]=publishedAt&fields[2]=updatedAt&pagination[page]=${page}&pagination[pageSize]=100`,
+			)
+			const data = response.data.data
+			const meta = response.data.meta
+
+			if (!data || data.length === 0) {
+				hasMore = false
+				break
+			}
+
+			allArticles = [
+				...allArticles,
+				...data.map(item => ({
+					slug: item.slug,
+					date: item.updatedAt || item.publishedAt || new Date().toISOString(),
+					category: item.category?.name?.toLowerCase() || 'tech',
+					authorSlug: item.author?.slug || 'alex-carter',
+				})),
+			]
+
+			if (meta?.pagination && meta.pagination.page >= meta.pagination.pageCount) {
+				hasMore = false
+			} else {
+				page++
+			}
+		} catch (error) {
+			console.error('Error fetching sitemap articles:', error)
+			hasMore = false
+		}
+	}
+	return allArticles
+}
+
+
 export const fetchArticleBySlug = async slug => {
 	try {
 		// Strapi uses filters for searching

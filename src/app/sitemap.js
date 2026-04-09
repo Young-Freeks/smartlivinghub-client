@@ -1,10 +1,10 @@
-import { fetchArticles } from '@/services/api'
+import { fetchAllArticlesForSitemap } from '@/services/api'
 
 export default async function sitemap() {
 	const baseUrl = 'https://smartlivinghub.info'
 
-	// Get all articles
-	const articles = await fetchArticles()
+	// Get all articles paginated
+	const articles = await fetchAllArticlesForSitemap()
 
 	// Base static routes
 	const routes = [

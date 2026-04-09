@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import './ArticlePage.css'
 import {
@@ -143,10 +144,13 @@ const ArticlePage = ({
 								className='article-author-link'
 								style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
 							>
-								<img
+								<Image
 									src={article.authorAvatar}
-									alt={article.author}
+									alt={`Avatar of ${article.author}`}
+									width={40}
+									height={40}
 									className='author-avatar-small'
+									style={{ objectFit: 'cover', borderRadius: '50%' }}
 								/>
 								<span className='article-author-name'>
 									By <strong>{article.author}</strong>
@@ -172,13 +176,25 @@ const ArticlePage = ({
 								{renderContent(firstPart)}
 								{article.contentImage1 && (
 									<figure className='article-inline-image'>
-										<img src={article.contentImage1} alt='Content Image 1' />
+										<Image 
+											src={article.contentImage1} 
+											alt={`Illustration 1 for ${article.title}`} 
+											width={800} 
+											height={450} 
+											style={{ width: '100%', height: 'auto' }} 
+										/>
 									</figure>
 								)}
 								{renderContent(secondPart)}
 								{article.contentImage2 && (
 									<figure className='article-inline-image'>
-										<img src={article.contentImage2} alt='Content Image 2' />
+										<Image 
+											src={article.contentImage2} 
+											alt={`Illustration 2 for ${article.title}`} 
+											width={800} 
+											height={450} 
+											style={{ width: '100%', height: 'auto' }} 
+										/>
 									</figure>
 								)}
 								{renderContent(thirdPart)}
@@ -188,7 +204,13 @@ const ArticlePage = ({
 								<p className='dropcap'>{article.excerpt}</p>
 								{article.contentImage1 && (
 									<figure className='article-inline-image'>
-										<img src={article.contentImage1} alt='Content Image 1' />
+										<Image 
+											src={article.contentImage1} 
+											alt={`Illustration 1 for ${article.title}`} 
+											width={800} 
+											height={450} 
+											style={{ width: '100%', height: 'auto' }} 
+										/>
 									</figure>
 								)}
 								<p>
@@ -197,7 +219,13 @@ const ArticlePage = ({
 								</p>
 								{article.contentImage2 && (
 									<figure className='article-inline-image'>
-										<img src={article.contentImage2} alt='Content Image 2' />
+										<Image 
+											src={article.contentImage2} 
+											alt={`Illustration 2 for ${article.title}`} 
+											width={800} 
+											height={450} 
+											style={{ width: '100%', height: 'auto' }} 
+										/>
 									</figure>
 								)}
 								<p>
@@ -266,7 +294,13 @@ const ArticlePage = ({
 											href={`/article/${item.slug}`}
 											className='related-img image-wrapper'
 										>
-											<img src={item.image} alt={item.title} />
+											<Image 
+												src={item.image} 
+												alt={item.title} 
+												width={400} 
+												height={250} 
+												style={{ width: '100%', height: 'auto', objectFit: 'cover' }} 
+											/>
 										</Link>
 										<h4 className='related-item-title'>
 											<Link href={`/article/${item.slug}`}>{item.title}</Link>
