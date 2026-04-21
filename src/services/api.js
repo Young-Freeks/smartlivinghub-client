@@ -274,6 +274,69 @@ export const fetchProductById = async id => {
 	}
 }
 
+// Temu affiliate product — separate collection with rich fields for prelanding
+const formatTemuProduct = item => {
+	const defaultImage =
+		'https://images.unsplash.com/photo-1607082349566-187342175e2f?auto=format&fit=crop&q=80&w=1200'
+
+	let imageUrl = defaultImage
+	let imageLarge = defaultImage
+	if (item.image && item.image.url) {
+		imageUrl = item.image.url
+		imageLarge = item.image.formats?.large?.url || item.image.url
+	}
+
+	const savings =
+		item.oldPrice && item.price
+			? Number((item.oldPrice - item.price).toFixed(2))
+			: 0
+
+	return {
+		id: item.id.toString(),
+		documentId: item.documentId,
+		title: item.title,
+		description: item.description,
+		benefitsTitle: item.benefitsTitle,
+		benefits: [
+			item.benefit1,
+			item.benefit2,
+			item.benefit3,
+			item.benefit4,
+		].filter(Boolean),
+		price: item.price,
+		oldPrice: item.oldPrice,
+		savings,
+		discount: item.discount,
+		rating: item.rating,
+		reviews: item.reviews,
+		timer: item.timer !== undefined ? item.timer : true,
+		country: item.country,
+		link: item.link,
+		image: imageUrl,
+		imageLarge,
+		alt: item.image?.alternativeText || item.title,
+	}
+}
+
+export const fetchTemuProducts = async () => {
+	try {
+		const response = await api.get(
+			'/product-temus?populate=*&pagination[limit]=20',
+		)
+		const data = response.data.data
+		if (!data) return []
+		return data.map(formatTemuProduct)
+	} catch (error) {
+		console.error('Error fetching Temu products:', error)
+		return []
+	}
+}
+
+export const fetchTemuProduct = async () => {
+	const products = await fetchTemuProducts()
+	return products[0] || null
+}
+
 export const submitContactMessage = async data => {
 	try {
 		const response = await api.post('/contacts', {
