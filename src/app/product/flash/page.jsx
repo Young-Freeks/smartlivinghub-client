@@ -5,9 +5,6 @@ import {
 	FaTruck,
 	FaHeadset,
 	FaCheckCircle,
-	FaUsb,
-	FaPlay,
-	FaCheck,
 	FaWindows,
 	FaApple,
 	FaAndroid,
@@ -18,16 +15,38 @@ import {
 	FaLock,
 	FaClock,
 	FaRegHeart,
+	FaStar,
 } from 'react-icons/fa'
+
+import heroLifestyle from '../../../assets/Banner_192125 (3024x4032).jpg'
+import problemCloudFull from '../../../assets/Banner_192126 (3804x2103).jpg'
+import compatIllustration from '../../../assets/Banner_192127 (2536x1402).jpg'
+import productFamily from '../../../assets/Banner_192128 (2400x2400).jpg'
+import variant128 from '../../../assets/Banner_192129 (1620x1620).png'
+import variant32 from '../../../assets/Banner_192130 (1620x1620).png'
+import variant512 from '../../../assets/Banner_192131 (1620x1620).png'
+import productTopDown from '../../../assets/Banner_192133 (1920x2560).png'
+import step1Image from '../../../assets/Banner_192148 (3840x3840).png'
+import step2Image from '../../../assets/Banner_192146 (3840x3840).png'
+import step3Image from '../../../assets/Banner_192147 (3840x3840).png'
+import review1 from '../../../assets/Banner_192135 (712x540).png'
+import review2 from '../../../assets/Banner_192136 (716x606).png'
+import review3 from '../../../assets/Banner_192137 (712x644).png'
+import review4 from '../../../assets/Banner_192138 (722x534).png'
+import review5 from '../../../assets/Banner_192140 (714x522).png'
+import review6 from '../../../assets/Banner_192141 (708x566).png'
+import review7 from '../../../assets/Banner_192142 (710x500).png'
+import review8 from '../../../assets/Banner_192143 (716x730).png'
+
 import './flash.css'
 
 export const metadata = {
-	title: 'Flash — Find & Protect ALL Your Memories In ONE Click',
+	title: 'ThePhotoStick Omni — Find & Protect ALL Your Memories In ONE Click',
 	description:
 		'Automatically finds, sorts, and saves up to 60,000 photos and videos across all your devices with just ONE click. Over 1.5 million people use this device.',
 	robots: { index: false, follow: true },
 	openGraph: {
-		title: 'Flash — Find & Protect ALL Your Memories In ONE Click',
+		title: 'ThePhotoStick Omni — Find & Protect ALL Your Memories In ONE Click',
 		description:
 			'Automatically finds, sorts, and saves up to 60,000 photos and videos across all your devices with just ONE click.',
 		type: 'website',
@@ -38,6 +57,7 @@ export const metadata = {
 }
 
 const PRODUCT = {
+	name: 'ThePhotoStick Omni',
 	price: 54,
 	oldPrice: 99,
 	currency: '$',
@@ -54,24 +74,24 @@ const COMPATIBILITY = [
 	{ icon: <FaFolderOpen />, title: 'Auto-organize', desc: 'Sorts files into folders and removes duplicates.' },
 ]
 
+const VARIANTS = [
+	{ image: variant32, label: '32 GB', sub: 'Up to 15,000 photos' },
+	{ image: variant128, label: '128 GB', sub: 'Up to 60,000 photos' },
+	{ image: variant512, label: '512 GB', sub: 'Up to 240,000 photos' },
+]
+
 const STEPS = [
 	{
-		num: '01',
-		title: 'Plug It In',
-		desc: 'Insert Flash into any USB port on your computer or phone. No software install, no setup.',
-		icon: <FaUsb />,
+		image: step1Image,
+		alt: 'Step 1 — Download the free ThePhotoStick Omni app',
 	},
 	{
-		num: '02',
-		title: "Hit 'Go'",
-		desc: 'Press one button. Flash instantly scans every folder for photos and videos — even ones you forgot you had.',
-		icon: <FaPlay />,
+		image: step2Image,
+		alt: 'Step 2 — Plug in the adapter to your phone',
 	},
 	{
-		num: '03',
-		title: "You're Done!",
-		desc: 'In minutes, thousands of memories are sorted, de-duplicated, and safely backed up.',
-		icon: <FaCheck />,
+		image: step3Image,
+		alt: 'Step 3 — Safely transfer files to your computer',
 	},
 ]
 
@@ -93,6 +113,8 @@ const TRUST_BADGES = [
 	},
 ]
 
+const REVIEWS = [review1, review2, review3, review4, review5, review6, review7, review8]
+
 const formatPrice = value => `${PRODUCT.currency}${value}`
 
 export default function FlashLandingPage() {
@@ -110,9 +132,9 @@ export default function FlashLandingPage() {
 							Memories In <span className='flash-accent'>ONE</span> Click!
 						</h1>
 						<p className='flash-hero-sub'>
-							Automatically finds, sorts, and saves up to{' '}
-							<strong>60,000 photos and videos</strong> across all your devices with
-							just <strong>ONE click</strong>.
+							{PRODUCT.name} automatically finds, sorts, and saves up to{' '}
+							<strong>60,000 photos and videos</strong> across all your devices
+							with just <strong>ONE click</strong>.
 						</p>
 
 						<ul className='flash-hero-bullets'>
@@ -149,11 +171,11 @@ export default function FlashLandingPage() {
 						<div className='flash-hero-image-ring' />
 						<div className='flash-hero-image-wrap'>
 							<Image
-								src='https://placehold.co/720x720/ec3535/ffffff/png?text=Flash'
-								alt='Flash device — find and protect all your memories in one click'
-								width={720}
-								height={720}
+								src={heroLifestyle}
+								alt='Woman backing up phone photos with ThePhotoStick Omni'
+								placeholder='blur'
 								priority
+								sizes='(max-width: 1024px) 90vw, 520px'
 								className='flash-hero-image'
 							/>
 						</div>
@@ -167,47 +189,59 @@ export default function FlashLandingPage() {
 
 			{/* Problem */}
 			<section className='flash-section flash-problem'>
-				<div className='container'>
-					<div className='flash-section-header'>
-						<span className='flash-tag flash-tag-warning'>
-							<FaExclamationTriangle /> Memories at risk
-						</span>
-						<h2 className='flash-section-title'>
-							Your photos &amp; videos are scattered — and one crash away from gone
-							forever.
-						</h2>
-						<p className='flash-section-lede'>
-							Cloud accounts fill up. Phones break. Computers crash. Backups feel
-							complicated, expensive, and scary. Most people never get around to it
-							— until it&apos;s too late.
-						</p>
+				<div className='container flash-problem-inner'>
+					<div className='flash-problem-media'>
+						<Image
+							src={problemCloudFull}
+							alt='Phone showing a Cloud Storage Is Full alert'
+							placeholder='blur'
+							sizes='(max-width: 1024px) 90vw, 520px'
+							className='flash-problem-image'
+						/>
 					</div>
 
-					<div className='flash-problem-grid'>
-						<div className='flash-problem-card'>
-							<div className='flash-problem-stat'>65%</div>
-							<p>
-								of people have lost photos &amp; videos to deletion, hardware failure,
-								or software issues.
+					<div>
+						<div className='flash-section-header'>
+							<span className='flash-tag flash-tag-warning'>
+								<FaExclamationTriangle /> Memories at risk
+							</span>
+							<h2 className='flash-section-title'>
+								Your photos &amp; videos are scattered — and one crash away from
+								gone forever.
+							</h2>
+							<p className='flash-section-lede'>
+								Cloud accounts fill up. Phones break. Computers crash. Backups
+								feel complicated, expensive, and scary. Most people never get
+								around to it — until it&apos;s too late.
 							</p>
 						</div>
-						<div className='flash-problem-card'>
-							<div className='flash-problem-stat'>
-								<FaLock />
+
+						<div className='flash-problem-grid'>
+							<div className='flash-problem-card'>
+								<div className='flash-problem-stat'>65%</div>
+								<p>
+									of people have lost photos &amp; videos to deletion, hardware
+									failure, or software issues.
+								</p>
 							</div>
-							<p>
-								Cloud subscriptions cost more every month — and your memories stay
-								locked behind a password and a paywall.
-							</p>
-						</div>
-						<div className='flash-problem-card'>
-							<div className='flash-problem-stat'>
-								<FaClock />
+							<div className='flash-problem-card'>
+								<div className='flash-problem-stat'>
+									<FaLock />
+								</div>
+								<p>
+									Cloud subscriptions cost more every month — and your memories
+									stay locked behind a password and a paywall.
+								</p>
 							</div>
-							<p>
-								Manual backups take hours. Sorting through duplicates takes even
-								longer. Most people give up halfway through.
-							</p>
+							<div className='flash-problem-card'>
+								<div className='flash-problem-stat'>
+									<FaClock />
+								</div>
+								<p>
+									Manual backups take hours. Sorting through duplicates takes
+									even longer. Most people give up halfway through.
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -218,10 +252,10 @@ export default function FlashLandingPage() {
 				<div className='container flash-solution-inner'>
 					<div className='flash-solution-media'>
 						<Image
-							src='https://placehold.co/640x520/111111/ffffff/png?text=One+Click+Backup'
-							alt='Flash one-click backup illustration'
-							width={640}
-							height={520}
+							src={productFamily}
+							alt='ThePhotoStick Omni product family'
+							placeholder='blur'
+							sizes='(max-width: 1024px) 90vw, 540px'
 							className='flash-solution-image'
 						/>
 					</div>
@@ -233,8 +267,8 @@ export default function FlashLandingPage() {
 							Photo &amp; Video Backup Made Easy
 						</h2>
 						<p className='flash-section-lede'>
-							Flash does in <strong>minutes</strong> what would take you
-							<strong> hours</strong> — automatically.
+							{PRODUCT.name} does in <strong>minutes</strong> what would take
+							you <strong>hours</strong> — automatically.
 						</p>
 						<ul className='flash-solution-list'>
 							<li>
@@ -247,22 +281,22 @@ export default function FlashLandingPage() {
 							<li>
 								<FaCheckCircle />
 								<div>
-									<strong>Removes duplicates automatically.</strong> No more 12 copies
-									of the same photo eating your space.
+									<strong>Removes duplicates automatically.</strong> No more 12
+									copies of the same photo eating your space.
 								</div>
 							</li>
 							<li>
 								<FaCheckCircle />
 								<div>
-									<strong>Works offline.</strong> Your memories stay yours — stored
-									securely, away from hackers and monthly cloud fees.
+									<strong>Works offline.</strong> Your memories stay yours —
+									stored securely, away from hackers and monthly cloud fees.
 								</div>
 							</li>
 							<li>
 								<FaCheckCircle />
 								<div>
-									<strong>Holds up to 120,000 photos &amp; videos.</strong> Plenty of
-									room for a lifetime of memories.
+									<strong>Holds up to 240,000 photos &amp; videos.</strong>{' '}
+									Plenty of room for a lifetime of memories.
 								</div>
 							</li>
 						</ul>
@@ -270,6 +304,40 @@ export default function FlashLandingPage() {
 							<span>{PRODUCT.cta}</span>
 							<FaArrowRight />
 						</a>
+					</div>
+				</div>
+			</section>
+
+			{/* Variants */}
+			<section className='flash-section flash-variants'>
+				<div className='container'>
+					<div className='flash-section-header flash-section-header-center'>
+						<span className='flash-tag'>Pick your size</span>
+						<h2 className='flash-section-title'>
+							Three capacities. One simple promise.
+						</h2>
+						<p className='flash-section-lede'>
+							Whether you&apos;re backing up one phone or a lifetime of family
+							memories, there&apos;s a {PRODUCT.name} for you.
+						</p>
+					</div>
+
+					<div className='flash-variants-grid'>
+						{VARIANTS.map(v => (
+							<div key={v.label} className='flash-variant-card'>
+								<div className='flash-variant-image-wrap'>
+									<Image
+										src={v.image}
+										alt={`ThePhotoStick Omni ${v.label}`}
+										placeholder='blur'
+										sizes='(max-width: 640px) 90vw, 320px'
+										className='flash-variant-image'
+									/>
+								</div>
+								<h3 className='flash-variant-label'>{v.label}</h3>
+								<p className='flash-variant-sub'>{v.sub}</p>
+							</div>
+						))}
 					</div>
 				</div>
 			</section>
@@ -283,10 +351,20 @@ export default function FlashLandingPage() {
 							One device. Every phone, every computer, every file type.
 						</h2>
 						<p className='flash-section-lede'>
-							No tech skills needed. Flash automatically detects your device and
-							supports <strong>100+ file types</strong> — photos, videos, RAW, and
-							more.
+							No tech skills needed. {PRODUCT.name} automatically detects your
+							device and supports <strong>100+ file types</strong> — photos,
+							videos, RAW, and more.
 						</p>
+					</div>
+
+					<div className='flash-compat-banner'>
+						<Image
+							src={compatIllustration}
+							alt='ThePhotoStick Omni working on phone and laptop across iOS, Android, Mac and Windows'
+							placeholder='blur'
+							sizes='(max-width: 1024px) 90vw, 960px'
+							className='flash-compat-banner-image'
+						/>
 					</div>
 
 					<div className='flash-compat-grid'>
@@ -314,54 +392,87 @@ export default function FlashLandingPage() {
 
 					<div className='flash-steps-grid'>
 						{STEPS.map(step => (
-							<div key={step.num} className='flash-step-card'>
-								<div className='flash-step-num'>{step.num}</div>
-								<div className='flash-step-icon'>{step.icon}</div>
-								<h3 className='flash-step-title'>{step.title}</h3>
-								<p className='flash-step-desc'>{step.desc}</p>
+							<div key={step.alt} className='flash-step-card'>
+								<Image
+									src={step.image}
+									alt={step.alt}
+									placeholder='blur'
+									sizes='(max-width: 1024px) 90vw, 360px'
+									className='flash-step-image'
+								/>
 							</div>
 						))}
 					</div>
 
 					<div className='flash-steps-cta'>
 						<a href={PRODUCT.checkoutHref} className='flash-btn-primary flash-btn-lg'>
-							<span>Get Flash — {formatPrice(PRODUCT.price)}</span>
+							<span>Get {PRODUCT.name} — {formatPrice(PRODUCT.price)}</span>
 							<FaArrowRight />
 						</a>
 					</div>
 				</div>
 			</section>
 
-			{/* Founder */}
-			<section className='flash-section flash-founder'>
-				<div className='container flash-founder-inner'>
-					<div className='flash-founder-media'>
+			{/* Reviews */}
+			<section className='flash-section flash-reviews'>
+				<div className='container'>
+					<div className='flash-section-header flash-section-header-center'>
+						<span className='flash-tag'>
+							<FaStar /> 5-star reviews
+						</span>
+						<h2 className='flash-section-title'>
+							Loved by 1.5 million people worldwide
+						</h2>
+						<p className='flash-section-lede'>
+							Real reviews from verified buyers — straight from our store.
+						</p>
+					</div>
+
+					<div className='flash-reviews-grid'>
+						{REVIEWS.map((src, i) => (
+							<div key={i} className='flash-review-card'>
+								<Image
+									src={src}
+									alt={`Verified 5-star review #${i + 1} for ${PRODUCT.name}`}
+									placeholder='blur'
+									sizes='(max-width: 640px) 90vw, 360px'
+									className='flash-review-image'
+								/>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* Story */}
+			<section className='flash-section flash-story'>
+				<div className='container flash-story-inner'>
+					<div className='flash-story-media'>
 						<Image
-							src='https://placehold.co/520x520/f9f9f9/111111/png?text=Founder'
-							alt='Mark Oman — Flash founder'
-							width={520}
-							height={520}
-							className='flash-founder-image'
+							src={productTopDown}
+							alt='ThePhotoStick Omni device with universal adapter'
+							placeholder='blur'
+							sizes='(max-width: 1024px) 90vw, 460px'
+							className='flash-story-image'
 						/>
 					</div>
-					<div className='flash-founder-content'>
-						<span className='flash-tag'>A note from the founder</span>
+					<div className='flash-story-content'>
+						<span className='flash-tag'>Why we built it</span>
 						<h2 className='flash-section-title'>
-							&ldquo;I built this so no one would ever lose their memories
-							again.&rdquo;
+							&ldquo;So no one would ever lose their memories again.&rdquo;
 						</h2>
-						<p className='flash-founder-text'>
-							Hi, I&apos;m <strong>Mark Oman</strong>, former VP &amp; GM at
-							Hewlett-Packard. Years ago, I watched too many friends lose entire
-							family albums to a broken phone or a failed hard drive. I knew there
-							had to be a simpler way — something so easy that anyone could use it.
+						<p className='flash-story-text'>
+							We watched too many friends lose entire family albums to a broken
+							phone or a failed hard drive. We knew there had to be a simpler
+							way — something so easy that anyone could use it.
 						</p>
-						<p className='flash-founder-text'>
-							That&apos;s why we built Flash from our small office in Haxtun,
-							Colorado. Today, more than <strong>1.5 million people</strong> in over{' '}
-							<strong>100 countries</strong> trust it to protect what matters most.
+						<p className='flash-story-text'>
+							That&apos;s why we built {PRODUCT.name}. Today, more than{' '}
+							<strong>1.5 million people</strong> in over{' '}
+							<strong>100 countries</strong> trust it to protect what matters
+							most.
 						</p>
-						<div className='flash-founder-sign'>— Mark Oman, Founder</div>
+						<div className='flash-story-sign'>— The ThePhotoStick Omni Team</div>
 					</div>
 				</div>
 			</section>
@@ -373,8 +484,8 @@ export default function FlashLandingPage() {
 						<span className='flash-tag'>Risk-free</span>
 						<h2 className='flash-section-title'>You&apos;re fully protected.</h2>
 						<p className='flash-section-lede'>
-							Try Flash for 30 days. If you don&apos;t love it, send it back for a
-							full refund — no questions asked.
+							Try {PRODUCT.name} for 30 days. If you don&apos;t love it, send it
+							back for a full refund — no questions asked.
 						</p>
 					</div>
 
@@ -417,19 +528,19 @@ export default function FlashLandingPage() {
 			</section>
 
 			{/* Sticky CTA */}
-			<div className='flash-sticky-cta' role='complementary' aria-label='Buy Flash'>
+			<div className='flash-sticky-cta' role='complementary' aria-label={`Buy ${PRODUCT.name}`}>
 				<div className='container flash-sticky-inner'>
 					<div className='flash-sticky-product'>
 						<div className='flash-sticky-thumb'>
 							<Image
-								src='https://placehold.co/96x96/ec3535/ffffff/png?text=F'
-								alt='Flash'
-								width={96}
-								height={96}
+								src={variant512}
+								alt={PRODUCT.name}
+								placeholder='blur'
+								sizes='56px'
 							/>
 						</div>
 						<div className='flash-sticky-info'>
-							<div className='flash-sticky-name'>Flash — One-Click Backup</div>
+							<div className='flash-sticky-name'>{PRODUCT.name} — One-Click Backup</div>
 							<div className='flash-sticky-price'>
 								<span className='flash-price-old'>
 									{formatPrice(PRODUCT.oldPrice)}
