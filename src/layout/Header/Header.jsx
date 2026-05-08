@@ -110,7 +110,7 @@ const Header = () => {
 			<nav className='nav-bar'>
 				<div className='container' style={{ position: 'relative' }}>
 					<ul className='nav-list'>
-						{['health', 'money', 'tech', 'home', 'travel'].map(cat => (
+						{['news', 'health', 'money', 'tech', 'home', 'travel'].map(cat => (
 							<li className='nav-item' key={cat}>
 								<Link
 									href={`/category/${cat}`}

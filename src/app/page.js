@@ -1,5 +1,5 @@
 import Home from '@/page_components/Home/Home'
-import { fetchArticles } from '@/services/api'
+import { fetchArticles, fetchNewsArticles } from '@/services/api'
 
 export const metadata = {
 	alternates: {
@@ -13,6 +13,7 @@ export const revalidate = 60
 export default async function Page() {
 	// Fetch data asynchronously on the server during the initial request
 	const articlesData = await fetchArticles()
+	const newsArticlesData = await fetchNewsArticles()
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -34,7 +35,7 @@ export default async function Page() {
 				type='application/ld+json'
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
-			<Home articlesData={articlesData} />
+			<Home articlesData={articlesData} newsArticlesData={newsArticlesData} />
 		</>
 	)
 }

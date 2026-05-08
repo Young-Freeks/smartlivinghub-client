@@ -62,6 +62,9 @@ export default function Footer() {
 					</Link>
 					<ul className='footer-categories'>
 						<li>
+							<Link href='/category/news'>News</Link>
+						</li>
+						<li>
 							<Link href='/category/health'>Health</Link>
 						</li>
 						<li>

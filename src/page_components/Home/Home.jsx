@@ -8,7 +8,7 @@ import CategorySection from '../../views/Home/CategorySection'
 import CategoryLifestyle from '../../views/Home/CategoryLifestyle'
 import './Home.css'
 
-const Home = ({ articlesData = [] }) => {
+const Home = ({ articlesData = [], newsArticlesData = [] }) => {
 	// Arrays for the mixed demo sections
 	const healthArticles = articlesData.filter(a => a.category === 'Health')
 	const moneyArticles = articlesData.filter(a => a.category === 'Money')
@@ -28,6 +28,11 @@ const Home = ({ articlesData = [] }) => {
 
 			{/* Demo: "Breaking" */}
 			<BreakingSection articles={breakingArticles} />
+
+			{/* News Section */}
+			{newsArticlesData.length > 0 && (
+				<CategorySection categoryName='News' articles={newsArticlesData.slice(0, 5)} />
+			)}
 
 			{/* Category Block 1 (Demo: "Politics") -> mapped to Health */}
 			<CategorySection categoryName='Health' articles={healthArticles} />

@@ -90,6 +90,50 @@ export const fetchArticles = async () => {
 	}
 }
 
+export const fetchNewsArticles = async () => {
+	try {
+		const response = await api.get(
+			`/news-articles?populate[0]=category&populate[1]=author.avatar&populate[2]=image&pagination[limit]=100`,
+		)
+		const data = response.data.data
+		if (!data) return []
+
+		return data.map(item => {
+			const dateObj = new Date(item.publishedAt || item.createdAt)
+			const options = { year: 'numeric', month: 'long', day: 'numeric' }
+			const formattedDate = dateObj.toLocaleDateString('en-US', options)
+
+			let imageUrl = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80'
+			if (item.image && item.image.url) {
+				imageUrl = item.image.url
+			}
+
+			return {
+				id: item.id.toString(),
+				documentId: item.documentId,
+				slug: item.slug,
+				title: item.title,
+				category: 'News',
+				author: item.author?.name || 'News Bot',
+				authorSlug: item.author?.slug || 'news-bot',
+				date: formattedDate,
+				image: imageUrl,
+				featuredImage: imageUrl,
+				content: item.content,
+				excerpt: item.description || '',
+				views: parseInt(item.views) || Math.floor(Math.random() * 10000),
+				commentsCount: parseInt(item.commentsCount) || 0,
+				isFeatured: item.isExclusive || false,
+				isExclusive: item.isExclusive || false,
+				tags: item.tags || ['News'],
+			}
+		})
+	} catch (error) {
+		console.error('Error fetching news articles:', error)
+		return []
+	}
+}
+
 export const fetchAllArticlesForSitemap = async () => {
 	let allArticles = []
 	let page = 1
@@ -135,15 +179,55 @@ export const fetchAllArticlesForSitemap = async () => {
 
 export const fetchArticleBySlug = async slug => {
 	try {
-		// Strapi uses filters for searching
+		// Try fetching from regular articles first
 		const response = await api.get(
 			`/articles?filters[slug][$eq]=${slug}&${POPULATE_QUERY}`,
 		)
-		const data = response.data.data
+		let data = response.data.data
 
-		if (!data || data.length === 0) return null
+		if (data && data.length > 0) {
+			return formatArticle(data[0])
+		}
 
-		return formatArticle(data[0])
+		// If not found, try fetching from news-articles
+		const newsResponse = await api.get(
+			`/news-articles?filters[slug][$eq]=${slug}&populate[0]=category&populate[1]=author.avatar&populate[2]=image`,
+		)
+		data = newsResponse.data.data
+
+		if (data && data.length > 0) {
+			const item = data[0]
+			const dateObj = new Date(item.publishedAt || item.createdAt)
+			const options = { year: 'numeric', month: 'long', day: 'numeric' }
+			const formattedDate = dateObj.toLocaleDateString('en-US', options)
+
+			let imageUrl = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80'
+			if (item.image && item.image.url) {
+				imageUrl = item.image.url
+			}
+
+			return {
+				id: item.id.toString(),
+				documentId: item.documentId,
+				slug: item.slug,
+				title: item.title,
+				category: 'News',
+				author: item.author?.name || 'News Bot',
+				authorSlug: item.author?.slug || 'news-bot',
+				date: formattedDate,
+				image: imageUrl,
+				featuredImage: imageUrl,
+				content: item.content,
+				excerpt: item.description || '',
+				views: parseInt(item.views) || Math.floor(Math.random() * 10000),
+				commentsCount: parseInt(item.commentsCount) || 0,
+				isFeatured: item.isExclusive || false,
+				isExclusive: item.isExclusive || false,
+				tags: item.tags || ['News'],
+			}
+		}
+
+		return null
 	} catch (error) {
 		console.error(`Error fetching article with slug ${slug}:`, error)
 		return null
@@ -156,13 +240,57 @@ export const fetchArticlesByCategory = async (categorySlug, page = 1) => {
 		const start = page === 1 ? 0 : 4 + (page - 1) * 5
 		const limit = page === 1 ? 9 : 5
 
-		const response = await api.get(
-			`/articles?filters[category][slug][$eq]=${categorySlug}&${POPULATE_QUERY}&pagination[start]=${start}&pagination[limit]=${limit}`,
-		)
+		let response;
+		if (categorySlug === 'news') {
+			response = await api.get(
+				`/news-articles?populate[0]=category&populate[1]=author.avatar&populate[2]=image&pagination[start]=${start}&pagination[limit]=${limit}`,
+			)
+		} else {
+			response = await api.get(
+				`/articles?filters[category][slug][$eq]=${categorySlug}&${POPULATE_QUERY}&pagination[start]=${start}&pagination[limit]=${limit}`,
+			)
+		}
+		
 		const data = response.data.data
 		const meta = response.data.meta
 
 		if (!data) return { articles: [], meta: null }
+
+		let articles = [];
+		if (categorySlug === 'news') {
+			articles = data.map(item => {
+				const dateObj = new Date(item.publishedAt || item.createdAt)
+				const options = { year: 'numeric', month: 'long', day: 'numeric' }
+				const formattedDate = dateObj.toLocaleDateString('en-US', options)
+
+				let imageUrl = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80'
+				if (item.image && item.image.url) {
+					imageUrl = item.image.url
+				}
+
+				return {
+					id: item.id.toString(),
+					documentId: item.documentId,
+					slug: item.slug,
+					title: item.title,
+					category: 'News',
+					author: item.author?.name || 'News Bot',
+					authorSlug: item.author?.slug || 'news-bot',
+					date: formattedDate,
+					image: imageUrl,
+					featuredImage: imageUrl,
+					content: item.content,
+					excerpt: item.description || '',
+					views: parseInt(item.views) || Math.floor(Math.random() * 10000),
+					commentsCount: parseInt(item.commentsCount) || 0,
+					isFeatured: item.isExclusive || false,
+					isExclusive: item.isExclusive || false,
+					tags: item.tags || ['News'],
+				}
+			})
+		} else {
+			articles = data.map(formatArticle)
+		}
 
 		const total = meta?.pagination?.total || 0
 		let pageCount = 1
@@ -171,7 +299,7 @@ export const fetchArticlesByCategory = async (categorySlug, page = 1) => {
 		}
 
 		return {
-			articles: data.map(formatArticle),
+			articles,
 			meta: { pageCount },
 		}
 	} catch (error) {
