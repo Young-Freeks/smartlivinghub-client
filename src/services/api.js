@@ -58,6 +58,7 @@ const formatArticle = item => {
 			item.author?.avatar?.url ||
 			`https://ui-avatars.com/api/?name=${encodeURIComponent(item.author?.name || 'Alex Carter')}&background=random&color=fff&size=52`,
 		date: formattedDate,
+		rawDate: item.publishedAt || item.createdAt,
 		image: imageUrl,
 		featuredImage: imageUrl,
 		contentImage1: item.contentImage1?.url || null,
@@ -69,6 +70,39 @@ const formatArticle = item => {
 		isFeatured: item.isExclusive || false,
 		isExclusive: item.isExclusive || false,
 		tags: item.tags || [],
+	}
+}
+
+const formatNewsArticle = item => {
+	const dateObj = new Date(item.publishedAt || item.createdAt)
+	const options = { year: 'numeric', month: 'long', day: 'numeric' }
+	const formattedDate = dateObj.toLocaleDateString('en-US', options)
+
+	let imageUrl = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80'
+	if (item.image && item.image.url) {
+		imageUrl = item.image.url
+	}
+
+	return {
+		id: item.id?.toString(),
+		documentId: item.documentId,
+		slug: item.slug,
+		title: item.title,
+		category: 'News',
+		author: item.author?.name || 'News Bot',
+		authorSlug: item.author?.slug || 'news-bot',
+		authorAvatar: item.author?.avatar?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.author?.name || 'News Bot')}&background=random&color=fff&size=52`,
+		date: formattedDate,
+		rawDate: item.publishedAt || item.createdAt,
+		image: imageUrl,
+		featuredImage: imageUrl,
+		content: item.content,
+		excerpt: item.description || '',
+		views: parseInt(item.views) || Math.floor(Math.random() * 10000),
+		commentsCount: parseInt(item.commentsCount) || 0,
+		isFeatured: item.isExclusive || false,
+		isExclusive: item.isExclusive || false,
+		tags: item.tags || ['News'],
 	}
 }
 
@@ -98,36 +132,7 @@ export const fetchNewsArticles = async () => {
 		const data = response.data.data
 		if (!data) return []
 
-		return data.map(item => {
-			const dateObj = new Date(item.publishedAt || item.createdAt)
-			const options = { year: 'numeric', month: 'long', day: 'numeric' }
-			const formattedDate = dateObj.toLocaleDateString('en-US', options)
-
-			let imageUrl = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80'
-			if (item.image && item.image.url) {
-				imageUrl = item.image.url
-			}
-
-			return {
-				id: item.id.toString(),
-				documentId: item.documentId,
-				slug: item.slug,
-				title: item.title,
-				category: 'News',
-				author: item.author?.name || 'News Bot',
-				authorSlug: item.author?.slug || 'news-bot',
-				date: formattedDate,
-				image: imageUrl,
-				featuredImage: imageUrl,
-				content: item.content,
-				excerpt: item.description || '',
-				views: parseInt(item.views) || Math.floor(Math.random() * 10000),
-				commentsCount: parseInt(item.commentsCount) || 0,
-				isFeatured: item.isExclusive || false,
-				isExclusive: item.isExclusive || false,
-				tags: item.tags || ['News'],
-			}
-		})
+		return data.map(formatNewsArticle)
 	} catch (error) {
 		console.error('Error fetching news articles:', error)
 		return []
@@ -136,12 +141,12 @@ export const fetchNewsArticles = async () => {
 
 export const fetchAllArticlesForSitemap = async () => {
 	let allArticles = []
+	
+	// Fetch regular articles
 	let page = 1
 	let hasMore = true
-
 	while (hasMore) {
 		try {
-			// Minimal query to fetch just what sitemap needs
 			const response = await api.get(
 				`/articles?populate[0]=category&populate[1]=author&fields[0]=slug&fields[1]=publishedAt&fields[2]=updatedAt&pagination[page]=${page}&pagination[pageSize]=100`,
 			)
@@ -173,6 +178,44 @@ export const fetchAllArticlesForSitemap = async () => {
 			hasMore = false
 		}
 	}
+
+	// Fetch news articles
+	page = 1
+	hasMore = true
+	while (hasMore) {
+		try {
+			const response = await api.get(
+				`/news-articles?populate[0]=category&populate[1]=author&fields[0]=slug&fields[1]=publishedAt&fields[2]=updatedAt&pagination[page]=${page}&pagination[pageSize]=100`,
+			)
+			const data = response.data.data
+			const meta = response.data.meta
+
+			if (!data || data.length === 0) {
+				hasMore = false
+				break
+			}
+
+			allArticles = [
+				...allArticles,
+				...data.map(item => ({
+					slug: item.slug,
+					date: item.updatedAt || item.publishedAt || new Date().toISOString(),
+					category: item.category?.name?.toLowerCase() || 'news',
+					authorSlug: item.author?.slug || 'ryan-mitchell',
+				})),
+			]
+
+			if (meta?.pagination && meta.pagination.page >= meta.pagination.pageCount) {
+				hasMore = false
+			} else {
+				page++
+			}
+		} catch (error) {
+			console.error('Error fetching sitemap news articles:', error)
+			hasMore = false
+		}
+	}
+
 	return allArticles
 }
 
@@ -196,35 +239,7 @@ export const fetchArticleBySlug = async slug => {
 		data = newsResponse.data.data
 
 		if (data && data.length > 0) {
-			const item = data[0]
-			const dateObj = new Date(item.publishedAt || item.createdAt)
-			const options = { year: 'numeric', month: 'long', day: 'numeric' }
-			const formattedDate = dateObj.toLocaleDateString('en-US', options)
-
-			let imageUrl = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80'
-			if (item.image && item.image.url) {
-				imageUrl = item.image.url
-			}
-
-			return {
-				id: item.id.toString(),
-				documentId: item.documentId,
-				slug: item.slug,
-				title: item.title,
-				category: 'News',
-				author: item.author?.name || 'News Bot',
-				authorSlug: item.author?.slug || 'news-bot',
-				date: formattedDate,
-				image: imageUrl,
-				featuredImage: imageUrl,
-				content: item.content,
-				excerpt: item.description || '',
-				views: parseInt(item.views) || Math.floor(Math.random() * 10000),
-				commentsCount: parseInt(item.commentsCount) || 0,
-				isFeatured: item.isExclusive || false,
-				isExclusive: item.isExclusive || false,
-				tags: item.tags || ['News'],
-			}
+			return formatNewsArticle(data[0])
 		}
 
 		return null
@@ -258,36 +273,7 @@ export const fetchArticlesByCategory = async (categorySlug, page = 1) => {
 
 		let articles = [];
 		if (categorySlug === 'news') {
-			articles = data.map(item => {
-				const dateObj = new Date(item.publishedAt || item.createdAt)
-				const options = { year: 'numeric', month: 'long', day: 'numeric' }
-				const formattedDate = dateObj.toLocaleDateString('en-US', options)
-
-				let imageUrl = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&w=1000&q=80'
-				if (item.image && item.image.url) {
-					imageUrl = item.image.url
-				}
-
-				return {
-					id: item.id.toString(),
-					documentId: item.documentId,
-					slug: item.slug,
-					title: item.title,
-					category: 'News',
-					author: item.author?.name || 'News Bot',
-					authorSlug: item.author?.slug || 'news-bot',
-					date: formattedDate,
-					image: imageUrl,
-					featuredImage: imageUrl,
-					content: item.content,
-					excerpt: item.description || '',
-					views: parseInt(item.views) || Math.floor(Math.random() * 10000),
-					commentsCount: parseInt(item.commentsCount) || 0,
-					isFeatured: item.isExclusive || false,
-					isExclusive: item.isExclusive || false,
-					tags: item.tags || ['News'],
-				}
-			})
+			articles = data.map(formatNewsArticle)
 		} else {
 			articles = data.map(formatArticle)
 		}
@@ -313,17 +299,27 @@ export const fetchArticlesByCategory = async (categorySlug, page = 1) => {
 
 export const fetchArticlesByAuthor = async (authorSlug, page = 1) => {
 	try {
-		const response = await api.get(
-			`/articles?filters[author][slug][$eq]=${authorSlug}&${POPULATE_QUERY}&pagination[page]=${page}&pagination[pageSize]=5`,
-		)
-		const data = response.data.data
-		const meta = response.data.meta
+		const pageSize = 5;
+		const [articlesRes, newsRes] = await Promise.all([
+			api.get(`/articles?filters[author][slug][$eq]=${authorSlug}&${POPULATE_QUERY}&pagination[limit]=100`),
+			api.get(`/news-articles?filters[author][slug][$eq]=${authorSlug}&populate[0]=category&populate[1]=author.avatar&populate[2]=image&pagination[limit]=100`)
+		]);
 
-		if (!data) return { articles: [], meta: null }
+		const dataArticles = articlesRes.data.data || [];
+		const dataNews = newsRes.data.data || [];
+
+		const formattedArticles = dataArticles.map(formatArticle);
+		const formattedNews = dataNews.map(formatNewsArticle);
+
+		const all = [...formattedArticles, ...formattedNews].sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
+
+		const total = all.length;
+		const pageCount = Math.ceil(total / pageSize) || 1;
+		const paginated = all.slice((page - 1) * pageSize, page * pageSize);
 
 		return {
-			articles: data.map(formatArticle),
-			meta: meta.pagination,
+			articles: paginated,
+			meta: { pageCount, total },
 		}
 	} catch (error) {
 		console.error(`Error fetching articles for author ${authorSlug}:`, error)

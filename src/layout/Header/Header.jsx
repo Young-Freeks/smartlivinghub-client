@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { fetchArticles } from '../../services/api'
+import { fetchArticles, fetchNewsArticles } from '../../services/api'
 import MenuModal from '../../components/MenuModal/MenuModal'
 import SearchDropdown from '../../components/SearchDropdown/SearchDropdown'
 import './Header.css'
@@ -40,8 +40,11 @@ const Header = () => {
 
 	useEffect(() => {
 		const loadData = async () => {
-			const data = await fetchArticles()
-			setAllArticles(data || [])
+			const [articles, news] = await Promise.all([
+				fetchArticles(),
+				fetchNewsArticles()
+			])
+			setAllArticles([...(articles || []), ...(news || [])])
 		}
 		loadData()
 	}, [])

@@ -150,8 +150,8 @@
 .article-text-body {
 	flex: 1;
 	font-family: 'Work Sans', sans-serif; /* From analysis */
-	font-size: 16px; /* From analysis */
-	line-height: 25.6px; /* From analysis */
+	font-size: 18px; /* Increased for better readability */
+	line-height: 1.7; /* Increased for better readability */
 	color: #111; /* Darker than before */
 	min-width: 0; /* Prevents overflow */
 }
@@ -190,6 +190,14 @@
 	font-size: 1.8rem;
 	font-weight: 700;
 	margin: 40px 0 20px 0;
+	color: #111;
+}
+
+.article-text-body h3 {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 1.4rem;
+	font-weight: 700;
+	margin: 35px 0 15px 0;
 	color: #111;
 }
 

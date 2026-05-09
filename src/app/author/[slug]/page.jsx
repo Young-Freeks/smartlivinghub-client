@@ -69,6 +69,7 @@ export default async function Page({ params, searchParams }) {
 	const authorData = fetchedAuthor
 	const authorArticles = articlesResult.articles || []
 	const totalPages = articlesResult.meta?.pageCount || 1
+	const totalArticles = articlesResult.meta?.total || 0
 	const recentArticles = recentData || []
 
 	// Pass pre-fetched server data down to the Client View Component
@@ -78,6 +79,7 @@ export default async function Page({ params, searchParams }) {
 			authorArticles={authorArticles}
 			recentArticles={recentArticles}
 			totalPages={totalPages}
+			totalArticles={totalArticles}
 			currentPage={currentPage}
 			slug={slug}
 		/>

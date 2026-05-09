@@ -11,6 +11,7 @@ const AuthorPage = ({
 	authorArticles = [],
 	recentArticles = [],
 	totalPages = 1,
+	totalArticles = 0,
 	currentPage = 1,
 	slug,
 }) => {
@@ -22,7 +23,7 @@ const AuthorPage = ({
 			authorData?.avatar ||
 			(authorArticles.length > 0 && authorArticles[0].authorAvatar) ||
 			`https://ui-avatars.com/api/?name=${encodeURIComponent(slug)}&background=random&color=fff&size=500`,
-		postsCount: authorArticles.length > 0 ? authorArticles.length : 0,
+		postsCount: totalArticles > 0 ? totalArticles : (authorArticles.length > 0 ? authorArticles.length : 0),
 		description:
 			authorData?.bio ||
 			'Newspaper is your news, entertainment, music fashion website. We provide you with the latest breaking news and videos straight from the entertainment industry.',
