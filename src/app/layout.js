@@ -1,3 +1,4 @@
+import Script from 'next/script'
 import './globals.css'
 import Layout from '@/layout/Layout/Layout'
 
@@ -44,6 +45,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang='en'>
+			<head>
+				<Script
+					async
+					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1441213592088493'
+					crossOrigin='anonymous'
+					strategy='afterInteractive'
+				/>
+			</head>
 			<body>
 				<Layout>{children}</Layout>
 			</body>
