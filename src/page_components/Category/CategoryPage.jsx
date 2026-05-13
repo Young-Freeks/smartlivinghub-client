@@ -34,6 +34,24 @@ const CategoryPage = ({
 		window.scrollTo({ top: 400, behavior: 'smooth' })
 	}
 
+	// Smart pagination: show at most 5 pages with ellipsis
+	const getPageNumbers = () => {
+		if (totalPages <= 7) {
+			return Array.from({ length: totalPages }, (_, i) => i + 1)
+		}
+		const pages = []
+		const delta = 2
+		const left = Math.max(2, currentPage - delta)
+		const right = Math.min(totalPages - 1, currentPage + delta)
+
+		pages.push(1)
+		if (left > 2) pages.push('...')
+		for (let i = left; i <= right; i++) pages.push(i)
+		if (right < totalPages - 1) pages.push('...')
+		pages.push(totalPages)
+		return pages
+	}
+
 	return (
 		<div className='category-page'>
 			{/* 1. Category Header Banner */}
@@ -141,15 +159,21 @@ const CategoryPage = ({
 								← Prev
 							</button>
 
-							{Array.from({ length: totalPages }).map((_, i) => (
-								<button
-									key={i + 1}
-									className={`page-numbers ${currentPage === i + 1 ? 'current' : ''}`}
-									onClick={() => paginate(i + 1)}
-								>
-									{i + 1}
-								</button>
-							))}
+							{getPageNumbers().map((page, i) =>
+								page === '...' ? (
+									<span key={`ellipsis-${i}`} className='page-numbers page-ellipsis'>
+										&hellip;
+									</span>
+								) : (
+									<button
+										key={page}
+										className={`page-numbers ${currentPage === page ? 'current' : ''}`}
+										onClick={() => paginate(page)}
+									>
+										{page}
+									</button>
+								)
+							)}
 
 							<button
 								className='page-numbers next'

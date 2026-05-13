@@ -40,7 +40,7 @@ const formatArticle = item => {
 
 	// Calculate reading time or provide default excerpt if none
 	const excerpt =
-		item.description ||
+		sanitizeDescription(item.description) ||
 		'An exclusive look into the most pressing trends of the year. Essential reading for anyone looking to stay ahead of the curve.'
 
 	return {
@@ -97,7 +97,7 @@ const formatNewsArticle = item => {
 		image: imageUrl,
 		featuredImage: imageUrl,
 		content: item.content,
-		excerpt: item.description || '',
+		excerpt: sanitizeDescription(item.description) || '',
 		views: parseInt(item.views) || Math.floor(Math.random() * 10000),
 		commentsCount: parseInt(item.commentsCount) || 0,
 		isFeatured: item.isExclusive || false,
@@ -106,13 +106,22 @@ const formatNewsArticle = item => {
 	}
 }
 
+// Strip Yoast/SEO template placeholders like %%title%%, %%sep%%, etc.
+// Note: sanitization is now done in the scraper (newsGenerator.js) before writing to Strapi.
+// This is kept as a safety net for any legacy data.
+const sanitizeDescription = text => {
+	if (!text) return ''
+	if (/%%.+%%/.test(text)) return ''
+	return text
+}
+
 const POPULATE_QUERY =
 	'populate[0]=category&populate[1]=author.avatar&populate[2]=featuredImage&populate[3]=contentImage1&populate[4]=contentImage2'
 
 export const fetchArticles = async () => {
 	try {
 		const response = await api.get(
-			`/articles?${POPULATE_QUERY}&pagination[limit]=100`,
+			`/articles?${POPULATE_QUERY}&sort[0]=publishedAt:desc&pagination[limit]=100`,
 		)
 		const data = response.data.data
 		if (!data) return []
@@ -127,7 +136,7 @@ export const fetchArticles = async () => {
 export const fetchNewsArticles = async () => {
 	try {
 		const response = await api.get(
-			`/news-articles?populate[0]=category&populate[1]=author.avatar&populate[2]=image&pagination[limit]=100`,
+			`/news-articles?populate[0]=category&populate[1]=author.avatar&populate[2]=image&sort[0]=publishedAt:desc&pagination[limit]=100`,
 		)
 		const data = response.data.data
 		if (!data) return []
@@ -258,11 +267,11 @@ export const fetchArticlesByCategory = async (categorySlug, page = 1) => {
 		let response;
 		if (categorySlug === 'news') {
 			response = await api.get(
-				`/news-articles?populate[0]=category&populate[1]=author.avatar&populate[2]=image&pagination[start]=${start}&pagination[limit]=${limit}`,
+				`/news-articles?populate[0]=category&populate[1]=author.avatar&populate[2]=image&sort[0]=publishedAt:desc&pagination[start]=${start}&pagination[limit]=${limit}`,
 			)
 		} else {
 			response = await api.get(
-				`/articles?filters[category][slug][$eq]=${categorySlug}&${POPULATE_QUERY}&pagination[start]=${start}&pagination[limit]=${limit}`,
+				`/articles?filters[category][slug][$eq]=${categorySlug}&${POPULATE_QUERY}&sort[0]=publishedAt:desc&pagination[start]=${start}&pagination[limit]=${limit}`,
 			)
 		}
 		
@@ -301,8 +310,8 @@ export const fetchArticlesByAuthor = async (authorSlug, page = 1) => {
 	try {
 		const pageSize = 5;
 		const [articlesRes, newsRes] = await Promise.all([
-			api.get(`/articles?filters[author][slug][$eq]=${authorSlug}&${POPULATE_QUERY}&pagination[limit]=100`),
-			api.get(`/news-articles?filters[author][slug][$eq]=${authorSlug}&populate[0]=category&populate[1]=author.avatar&populate[2]=image&pagination[limit]=100`)
+			api.get(`/articles?filters[author][slug][$eq]=${authorSlug}&${POPULATE_QUERY}&sort[0]=publishedAt:desc&pagination[limit]=100`),
+			api.get(`/news-articles?filters[author][slug][$eq]=${authorSlug}&populate[0]=category&populate[1]=author.avatar&populate[2]=image&sort[0]=publishedAt:desc&pagination[limit]=100`)
 		]);
 
 		const dataArticles = articlesRes.data.data || [];

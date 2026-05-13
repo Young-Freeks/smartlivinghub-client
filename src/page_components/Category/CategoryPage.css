@@ -122,8 +122,11 @@
 .category-pagination {
 	margin-top: 50px;
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: 10px;
+	gap: 6px;
+	max-width: 100%;
+	overflow: hidden;
 }
 
 .page-numbers {
@@ -132,7 +135,7 @@
 	justify-content: center;
 	min-width: 40px;
 	height: 40px;
-	padding: 0 15px;
+	padding: 0 12px;
 	background-color: var(--bg-light);
 	color: var(--text-dark);
 	font-family: var(--font-ui);
@@ -141,6 +144,7 @@
 	text-decoration: none;
 	transition: all 0.3s ease;
 	border: 1px solid transparent;
+	white-space: nowrap;
 }
 
 .page-numbers:hover {
@@ -153,8 +157,24 @@
 	cursor: default;
 }
 
+/* prev/next same size as number buttons */
+.page-numbers.prev,
 .page-numbers.next {
-	font-size: 18px;
+	font-size: 14px;
+	padding: 0 12px;
+}
+
+.page-ellipsis {
+	background: none;
+	border: none;
+	color: var(--text-muted, #999);
+	cursor: default;
+	pointer-events: none;
+	padding: 0 2px;
+	min-width: unset;
+	height: 40px;
+	display: flex;
+	align-items: center;
 }
 
 /* Mobile Responsiveness */
@@ -174,13 +194,13 @@
 
 @media (max-width: 576px) {
 	.category-header-banner {
-		padding: 25px 0; /* Significantly reduced mobile padding */
+		padding: 25px 0;
 		margin-bottom: 25px;
 	}
 
 	.category-title-main {
-		font-size: 32px; /* Slightly smaller for mobile */
-		margin-bottom: 5px; /* Less margin */
+		font-size: 32px;
+		margin-bottom: 5px;
 	}
 
 	.category-featured-grid {
@@ -190,16 +210,50 @@
 	.cat-featured-title {
 		font-size: 18px;
 	}
+
+	.category-pagination {
+		justify-content: center;
+		gap: 4px;
+	}
+
+	.page-numbers {
+		min-width: 34px;
+		height: 34px;
+		padding: 0 8px;
+		font-size: 13px;
+	}
+
+	.page-numbers.prev,
+	.page-numbers.next {
+		padding: 0 10px;
+		font-size: 13px;
+	}
+
+	.page-ellipsis {
+		height: 34px;
+		padding: 0 2px;
+	}
 }
 
 @media (max-width: 400px) {
 	.category-title-main {
 		font-size: 28px;
 	}
+
 	.page-numbers {
-		min-width: 30px;
+		min-width: 28px;
 		height: 30px;
+		padding: 0 6px;
+		font-size: 12px;
+	}
+
+	.page-numbers.prev,
+	.page-numbers.next {
 		padding: 0 8px;
 		font-size: 12px;
+	}
+
+	.page-ellipsis {
+		height: 30px;
 	}
 }
